@@ -31,7 +31,6 @@ body {
   overflow: hidden;
 }
 
-/* Animated scanlines */
 body::before {
   content: '';
   position: fixed;
@@ -47,7 +46,6 @@ body::before {
   z-index: 100;
 }
 
-/* Subtle grid background */
 body::after {
   content: '';
   position: fixed;
@@ -75,7 +73,6 @@ body::after {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Header */
 .header {
   display: flex;
   align-items: center;
@@ -97,10 +94,7 @@ body::after {
   50% { text-shadow: 0 0 16px rgba(100,180,255,1), 0 0 45px rgba(60,130,255,0.6); }
 }
 
-.header-btns {
-  display: flex;
-  gap: 6px;
-}
+.header-btns { display: flex; gap: 6px; }
 
 .icon-btn {
   width: 34px;
@@ -123,7 +117,6 @@ body::after {
   transform: translateY(-1px);
 }
 
-/* Settings dropdown */
 .settings-panel {
   position: absolute;
   top: 46px;
@@ -165,11 +158,7 @@ input[type=color] {
   border-radius: 6px;
 }
 
-.preset-btns {
-  display: flex;
-  gap: 5px;
-  margin-top: 8px;
-}
+.preset-btns { display: flex; gap: 5px; margin-top: 8px; }
 
 .preset-btns button {
   flex: 1;
@@ -190,7 +179,6 @@ input[type=color] {
   transform: translateY(-1px);
 }
 
-/* Score bar */
 .scores {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -202,15 +190,8 @@ input[type=color] {
   padding: 8px 12px;
 }
 
-.score-side {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.score-side.right {
-  flex-direction: row-reverse;
-}
+.score-side { display: flex; align-items: center; gap: 8px; }
+.score-side.right { flex-direction: row-reverse; }
 
 .score-marker {
   width: 28px;
@@ -244,14 +225,8 @@ input[type=color] {
 
 .score-num.x { color: var(--x); text-shadow: 0 0 12px var(--glow-x); }
 .score-num.o { color: var(--o); text-shadow: 0 0 12px var(--glow-o); }
+.score-sep { font-size: 0.7rem; color: var(--dim); letter-spacing: 1px; }
 
-.score-sep {
-  font-size: 0.7rem;
-  color: var(--dim);
-  letter-spacing: 1px;
-}
-
-/* Status + Timer */
 .infobar {
   display: flex;
   justify-content: space-between;
@@ -272,11 +247,7 @@ input[type=color] {
 .status.active-o { color: var(--o); }
 .status.win { color: #ffd700; font-size: 0.85rem; }
 
-.timer-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.timer-wrap { display: flex; align-items: center; gap: 6px; }
 
 .timer-bar-bg {
   width: 70px;
@@ -303,7 +274,6 @@ input[type=color] {
   transition: color 0.3s;
 }
 
-/* Board */
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -327,15 +297,6 @@ input[type=color] {
   user-select: none;
 }
 
-.cell::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-  pointer-events: none;
-}
-
 .cell:hover:not(.taken) {
   border-color: rgba(100,140,255,0.5);
   box-shadow: 0 0 16px rgba(60,100,255,0.2), inset 0 0 20px rgba(60,100,255,0.05);
@@ -350,30 +311,29 @@ input[type=color] {
   transform-origin: center;
 }
 
-/* Entrance animation for marks */
+/* Pop animation — short & snappy */
 .cell.place-anim .mark {
-  animation: markPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: markPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 @keyframes markPop {
-  from { opacity: 0; transform: scale(0.4) rotate(-10deg); }
-  to { opacity: 1; transform: scale(1) rotate(0deg); }
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* Vanish animation for removed mark */
+/* Vanish on the OLD cell — purely visual, non-blocking */
 .cell.vanish-anim {
-  animation: markVanish 0.25s ease-in both;
+  animation: markVanish 0.18s ease-in both;
 }
 
 @keyframes markVanish {
   from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.5) rotate(8deg); }
+  to { opacity: 0; transform: scale(0.5); }
 }
 
 .cell .x-mark { color: var(--x); text-shadow: 0 0 12px var(--x), 0 0 30px rgba(255,51,85,0.5); }
 .cell .o-mark { color: var(--o); text-shadow: 0 0 12px var(--o), 0 0 30px rgba(0,200,255,0.4); }
 
-/* Oldest piece warning — only shown after 3 moves */
 .cell.warn-x {
   border-color: rgba(255,51,85,0.6);
   box-shadow: 0 0 14px var(--glow-x), inset 0 0 14px rgba(255,51,85,0.06);
@@ -396,27 +356,7 @@ input[type=color] {
   50% { box-shadow: 0 0 20px var(--glow-o), inset 0 0 18px rgba(0,200,255,0.1); }
 }
 
-/* Win line overlay */
-.win-line {
-  position: absolute;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.7), transparent);
-  height: 3px;
-  border-radius: 99px;
-  transform-origin: left center;
-  z-index: 10;
-  pointer-events: none;
-  animation: winLineGrow 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes winLineGrow {
-  from { transform: scaleX(0); opacity: 0; }
-  to { transform: scaleX(1); opacity: 1; }
-}
-
-/* Win flash on cells */
-.cell.win-flash {
-  animation: winFlash 0.5s ease both;
-}
+.cell.win-flash { animation: winFlash 0.5s ease both; }
 
 @keyframes winFlash {
   0% { transform: scale(1); }
@@ -424,22 +364,15 @@ input[type=color] {
   100% { transform: scale(1); }
 }
 
-/* Danger shake */
 @keyframes dangerShake {
   0%,100% { transform: translateX(0); }
   25% { transform: translateX(-2px); }
   75% { transform: translateX(2px); }
 }
 
-.danger-anim {
-  animation: dangerShake 0.15s ease infinite;
-}
+.danger-anim { animation: dangerShake 0.15s ease infinite; }
 
-/* Controls */
-.controls {
-  display: flex;
-  gap: 8px;
-}
+.controls { display: flex; gap: 8px; }
 
 .btn {
   flex: 1;
@@ -470,7 +403,6 @@ input[type=color] {
 
 .btn:active { transform: translateY(0); }
 
-/* Score pop animation */
 @keyframes scorePop {
   0% { transform: scale(1); }
   40% { transform: scale(1.4); }
@@ -489,10 +421,6 @@ input[type=color] {
   justify-content: center;
   backdrop-filter: blur(4px);
   animation: fadeIn 0.3s ease both;
-}
-
-.modal-overlay.closing {
-  animation: fadeOut 0.25s ease both;
 }
 
 @keyframes fadeOut {
@@ -534,7 +462,6 @@ input[type=color] {
   margin-bottom: 18px;
 }
 
-/* Tutorial mini-board */
 .tut-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -572,11 +499,11 @@ input[type=color] {
 }
 
 .tut-cell.drop-in .mark {
-  animation: markPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: markPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .tut-cell.fade-out .mark {
-  animation: markVanish 0.3s ease both;
+  animation: markVanish 0.18s ease both;
 }
 
 .tut-desc {
@@ -600,11 +527,7 @@ input[type=color] {
   justify-content: space-between;
 }
 
-.tut-dots {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
+.tut-dots { display: flex; gap: 5px; align-items: center; }
 
 .tut-dot {
   width: 6px;
@@ -653,7 +576,6 @@ input[type=color] {
   color: var(--text);
 }
 
-/* Particle burst for wins */
 .particle {
   position: fixed;
   pointer-events: none;
@@ -666,13 +588,11 @@ input[type=color] {
   from { transform: translate(0,0) scale(1); opacity: 1; }
   to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
 }
-
 </style>
 </head>
 <body>
 
 <div class="wrap" id="wrap">
-  <!-- Header -->
   <div class="header">
     <div class="logo">NEON SHIFT</div>
     <div class="header-btns">
@@ -681,7 +601,6 @@ input[type=color] {
     </div>
   </div>
 
-  <!-- Settings -->
   <div class="settings-panel" id="settingsPanel">
     <label>X COLOR</label>
     <input type="color" id="xColor" value="#ff3355">
@@ -695,7 +614,6 @@ input[type=color] {
     </div>
   </div>
 
-  <!-- Scores -->
   <div class="scores">
     <div class="score-side left">
       <div class="score-marker x">X</div>
@@ -708,7 +626,6 @@ input[type=color] {
     </div>
   </div>
 
-  <!-- Status + Timer -->
   <div class="infobar">
     <div class="status" id="status">PRESS START</div>
     <div class="timer-wrap">
@@ -717,10 +634,8 @@ input[type=color] {
     </div>
   </div>
 
-  <!-- Board -->
   <div class="board" id="board"></div>
 
-  <!-- Controls -->
   <div class="controls">
     <button class="btn btn-primary" id="startBtn">START</button>
     <button class="btn" id="resetBtn">RESET</button>
@@ -728,7 +643,7 @@ input[type=color] {
 </div>
 
 <!-- Tutorial Modal -->
-<div class="modal-overlay" id="tutOverlay">
+<div class="modal-overlay" id="tutOverlay" style="display:none;">
   <div class="modal" id="tutModal">
     <div class="modal-title">HOW TO PLAY</div>
     <div class="tut-step-num" id="tutStepNum">STEP 1 / 4</div>
@@ -751,7 +666,7 @@ let started = false;
 let over = false;
 let timerInterval = null;
 let timeLeft = 8;
-let turnLimit = 8;
+let timerLimit = 8;
 let gameStart = 0;
 let scores = { X: 0, O: 0 };
 
@@ -789,7 +704,7 @@ function buildBoard() {
   }
 }
 
-function renderBoard(animIdx = -1, removeIdx = -1) {
+function renderBoard(animIdx = -1) {
   const cells = document.querySelectorAll('#board .cell');
   cells.forEach((c, i) => {
     const v = board[i];
@@ -806,36 +721,35 @@ function renderBoard(animIdx = -1, removeIdx = -1) {
 function applyWarnings() {
   if (!started || over) return;
   const cells = document.querySelectorAll('#board .cell');
-  cells.forEach(c => {
-    c.classList.remove('warn-x', 'warn-o');
-  });
-  // Only warn when player already has 3 pieces (oldest is about to be displaced)
-  if (history.X.length === 3) {
-    cells[history.X[0]].classList.add('warn-x');
-  }
-  if (history.O.length === 3) {
-    cells[history.O[0]].classList.add('warn-o');
-  }
+  cells.forEach(c => c.classList.remove('warn-x', 'warn-o'));
+  if (history.X.length === 3) cells[history.X[0]].classList.add('warn-x');
+  if (history.O.length === 3) cells[history.O[0]].classList.add('warn-o');
 }
 
-// ── Move Logic ─────────────────────────────────────────────────────────
-async function move(idx) {
+// ── Move Logic — fully synchronous, no awaiting animations ─────────────
+function move(idx) {
   if (!started || over || board[idx]) return;
-  const ph = history[current];
-  let removeIdx = -1;
 
+  const ph = history[current];
+
+  // If player already has 3 pieces, remove oldest immediately
+  // but fire a visual-only vanish animation (non-blocking)
   if (ph.length === 3) {
-    removeIdx = ph.shift();
-    // Brief vanish animation
+    const removeIdx = ph.shift();
     const rc = document.querySelectorAll('#board .cell')[removeIdx];
+    // Trigger vanish CSS animation — purely cosmetic, doesn't block
     rc.classList.add('vanish-anim');
-    await delay(200);
+    // After animation ends, clear the cell (board already updated below)
+    setTimeout(() => {
+      if (rc) rc.classList.remove('vanish-anim');
+    }, 180);
     board[removeIdx] = '';
   }
 
+  // Place new piece immediately
   board[idx] = current;
   ph.push(idx);
-  renderBoard(idx, removeIdx);
+  renderBoard(idx);
 
   const win = checkWin(current);
   if (win) {
@@ -843,7 +757,7 @@ async function move(idx) {
     return;
   }
   current = current === 'X' ? 'O' : 'X';
-  setStatus(`${current}'S TURN`, current.toLowerCase());
+  setStatus(`${current}'S TURN`, 'active-' + current.toLowerCase());
   resetTimer();
 }
 
@@ -878,7 +792,8 @@ function celebrate(line, p) {
 }
 
 function fireworks(p) {
-  const color = getComputedStyle(document.documentElement).getPropertyValue(p === 'X' ? '--x' : '--o').trim();
+  const color = getComputedStyle(document.documentElement)
+    .getPropertyValue(p === 'X' ? '--x' : '--o').trim();
   const cx = window.innerWidth / 2;
   const cy = window.innerHeight / 2;
   for (let i = 0; i < 28; i++) {
@@ -886,14 +801,14 @@ function fireworks(p) {
     el.className = 'particle';
     const angle = (i / 28) * 360;
     const dist = 80 + Math.random() * 120;
-    const tx = Math.cos(angle * Math.PI/180) * dist;
-    const ty = Math.sin(angle * Math.PI/180) * dist;
+    const tx = Math.cos(angle * Math.PI / 180) * dist;
+    const ty = Math.sin(angle * Math.PI / 180) * dist;
     const size = 4 + Math.random() * 6;
     el.style.cssText = `
       left:${cx}px; top:${cy}px;
       width:${size}px; height:${size}px;
       background:${color};
-      box-shadow: 0 0 ${size*2}px ${color};
+      box-shadow: 0 0 ${size * 2}px ${color};
       --tx:${tx}px; --ty:${ty}px;
       --dur:${0.5 + Math.random() * 0.5}s;
     `;
@@ -940,8 +855,6 @@ function resetTimer() {
   }, 50);
 }
 
-let timerLimit = 8;
-
 function updateTimer() {
   const pct = timerLimit > 0 ? timeLeft / timerLimit : 0;
   const bar = document.getElementById('timerBar');
@@ -949,13 +862,13 @@ function updateTimer() {
   bar.style.width = (pct * 100) + '%';
   val.textContent = timeLeft.toFixed(1);
 
-  let col, barCol;
-  if (pct > 0.5) { col = '#00ffe1'; barCol = '#00ffe1'; }
-  else if (pct > 0.3) { col = '#ffe600'; barCol = '#ffe600'; }
-  else if (pct > 0.15) { col = '#ff7b00'; barCol = '#ff7b00'; }
-  else { col = '#ff2222'; barCol = '#ff2222'; }
+  let col;
+  if (pct > 0.5) col = '#00ffe1';
+  else if (pct > 0.3) col = '#ffe600';
+  else if (pct > 0.15) col = '#ff7b00';
+  else col = '#ff2222';
   val.style.color = col;
-  bar.style.background = barCol;
+  bar.style.background = col;
 
   const wrap = document.getElementById('wrap');
   if (pct < 0.15) wrap.classList.add('danger-anim');
@@ -1000,10 +913,9 @@ function setStatus(text, cls) {
   s.className = 'status' + (cls ? ' ' + cls : '');
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
 // ── Tutorial ───────────────────────────────────────────────────────────
+const TUT_SEEN_KEY = 'neonshift_tut_seen';
+
 const tutSteps = [
   {
     desc: `<span class="hi-x">X</span> and <span class="hi-o">O</span> take turns placing pieces.<br>Get <span class="hi-y">three in a row</span> to win — horizontally, vertically, or diagonally.`,
@@ -1028,25 +940,27 @@ let tutAnimTimer = null;
 
 function openTutorial() {
   tutStep = 0;
-  document.getElementById('tutOverlay').style.display = 'flex';
-  document.getElementById('tutOverlay').style.animation = 'fadeIn 0.3s ease both';
+  const o = document.getElementById('tutOverlay');
+  o.style.display = 'flex';
+  o.style.animation = 'fadeIn 0.3s ease both';
   renderTutStep();
 }
 
 function closeTutorial() {
   const o = document.getElementById('tutOverlay');
   o.style.animation = 'fadeOut 0.25s ease both';
-  setTimeout(() => o.style.display = 'none', 250);
-  if (tutAnimTimer) clearTimeout(tutAnimTimer);
+  setTimeout(() => { o.style.display = 'none'; }, 250);
+  if (tutAnimTimer) { clearTimeout(tutAnimTimer); tutAnimTimer = null; }
+  // Mark as seen so it never auto-opens again
+  try { localStorage.setItem(TUT_SEEN_KEY, '1'); } catch(e) {}
 }
 
 function renderTutStep() {
-  if (tutAnimTimer) clearTimeout(tutAnimTimer);
+  if (tutAnimTimer) { clearTimeout(tutAnimTimer); tutAnimTimer = null; }
   const step = tutSteps[tutStep];
   document.getElementById('tutStepNum').textContent = `STEP ${tutStep + 1} / ${tutSteps.length}`;
   document.getElementById('tutDesc').innerHTML = step.desc;
 
-  // Dots
   const dots = document.getElementById('tutDots');
   dots.innerHTML = '';
   tutSteps.forEach((_, i) => {
@@ -1075,48 +989,62 @@ function makeTutBoard(state) {
   }
 }
 
+function scheduleAnim(fn, ms) {
+  tutAnimTimer = setTimeout(fn, ms);
+}
+
 async function runTutAnim(type) {
   const tb = document.getElementById('tutBoard');
+
   if (type === 'intro') {
-    // Animate placing pieces in a row
     makeTutBoard(Array(9).fill(''));
     const seq = [[0,'X'],[1,'O'],[2,'X']];
-    for (const [i, p] of seq) {
-      await delay(420);
-      if (tutAnimTimer === 'abort') return;
-      const tc = document.getElementById(`tc${i}`);
-      tc.innerHTML = `<span class="mark ${p === 'X' ? 'x-mark' : 'o-mark'}">${p}</span>`;
-      tc.classList.add('drop-in');
-      setTimeout(() => tc.classList.remove('drop-in'), 400);
-    }
-    await delay(500);
-    // flash win
-    [0,1,2].forEach(i => document.getElementById(`tc${i}`)?.classList.add('highlight-x'));
+    let delay = 400;
+    seq.forEach(([i, p]) => {
+      scheduleAnim(() => {
+        const tc = document.getElementById(`tc${i}`);
+        if (!tc) return;
+        tc.innerHTML = `<span class="mark ${p === 'X' ? 'x-mark' : 'o-mark'}">${p}</span>`;
+        tc.classList.add('drop-in');
+        setTimeout(() => tc.classList.remove('drop-in'), 200);
+      }, delay);
+      delay += 350;
+    });
+    scheduleAnim(() => {
+      [0,1,2].forEach(i => document.getElementById(`tc${i}`)?.classList.add('highlight-x'));
+    }, delay + 200);
   }
 
   else if (type === 'shift') {
-    // Show 3 X's, then X places 4th — oldest vanishes
     makeTutBoard(['X','O','','X','O','','X','','']);
-    await delay(600);
-    // oldest X glows briefly
-    document.getElementById('tc0').classList.add('highlight-x');
-    await delay(700);
-    // place new X at index 7 — tc0 vanishes
-    document.getElementById('tc0').classList.add('fade-out');
-    await delay(280);
-    document.getElementById('tc0').innerHTML = '';
-    document.getElementById('tc0').classList.remove('highlight-x','fade-out');
-    const tc7 = document.getElementById('tc7');
-    tc7.innerHTML = `<span class="mark x-mark">X</span>`;
-    tc7.classList.add('drop-in');
-    setTimeout(() => tc7.classList.remove('drop-in'), 400);
+    scheduleAnim(() => {
+      document.getElementById('tc0')?.classList.add('highlight-x');
+    }, 500);
+    scheduleAnim(() => {
+      const tc0 = document.getElementById('tc0');
+      if (tc0) {
+        tc0.classList.add('fade-out');
+        setTimeout(() => {
+          if (tc0) { tc0.innerHTML = ''; tc0.classList.remove('highlight-x','fade-out'); }
+        }, 180);
+      }
+      scheduleAnim(() => {
+        const tc7 = document.getElementById('tc7');
+        if (tc7) {
+          tc7.innerHTML = `<span class="mark x-mark">X</span>`;
+          tc7.classList.add('drop-in');
+          setTimeout(() => tc7.classList.remove('drop-in'), 200);
+        }
+      }, 100);
+    }, 1100);
   }
 
   else if (type === 'warn') {
     makeTutBoard(['X','O','','X','O','','X','','']);
-    await delay(400);
-    document.getElementById('tc0').classList.add('highlight-x');
-    document.getElementById('tc3').classList.add('highlight-o');
+    scheduleAnim(() => {
+      document.getElementById('tc0')?.classList.add('highlight-x');
+      document.getElementById('tc3')?.classList.add('highlight-o');
+    }, 300);
   }
 
   else if (type === 'timer') {
@@ -1130,11 +1058,10 @@ async function runTutAnim(type) {
         <div style="font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--dim); text-align:center; margin-top:4px;">Gets shorter as the game progresses</div>
       </div>
     `;
-    // Animate countdown
     let t = 8;
     const lim = 8;
-    async function tick() {
-      if (t < 0) { t = 8; }
+    function tick() {
+      if (t < 0) t = 8;
       const d = document.getElementById('tut-timer-demo');
       const bar = document.getElementById('tut-bar');
       if (!d) return;
@@ -1152,9 +1079,7 @@ async function runTutAnim(type) {
       tutAnimTimer = setTimeout(tick, 120);
     }
     tick();
-    return; // skip the normal tutAnimTimer reset
   }
-  tutAnimTimer = null;
 }
 
 document.getElementById('tutBtn').onclick = openTutorial;
@@ -1177,7 +1102,13 @@ document.getElementById('tutPrev').onclick = () => {
 
 // ── Init ──────────────────────────────────────────────────────────────
 buildBoard();
-openTutorial(); // Show tutorial on first load
+
+// Only show tutorial automatically if never seen before
+try {
+  if (!localStorage.getItem(TUT_SEEN_KEY)) openTutorial();
+} catch(e) {
+  openTutorial(); // if localStorage unavailable, show it
+}
 </script>
 </body>
 </html>
