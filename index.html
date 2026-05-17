@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Neon Shift Tac Toe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+    :root{
+        --x-color:#ff2b2b;
+        --o-color:#2b8cff;
+        --bg:#06070d;
+        --panel:#0d1020;
+        --grid:#1f2440;
+        --text:#dfe7ff;
+    }
+
+    *{
+        box-sizing:border-box;
+    }
+
+    body{
+        margin:0;
+        min-height:100vh;
+        background:
+            radial-gradient(circle at top,#111933 0%,#06070d 50%);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-family:'Orbitron',sans-serif;
+        color:var(--text);
+        overflow:hidden;
+    }
+
+    .game{
+        width:min(92vw,700px);
+        text-align:center;
+        position:relative;
+    }
+
+    h1{
+        margin-top:0;
+        font-size:clamp(2rem,4vw,3rem);
+        letter-spacing:4px;
+        text-shadow:
+            0 0 8px #fff,
+            0 0 20px #3d8bff;
+    }
+
+    .topbar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:18px;
+    }
+
+    .status{
+        font-size:1.1rem;
+        letter-spacing:2px;
+        min-height:28px;
+    }
+
+    .timer{
+        font-size:2.3rem;
+        font-weight:700;
+        transition:.15s;
+        text-shadow:0 0 10px currentColor;
+    }
+
+    .board{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:14px;
+        margin-top:18px;
+    }
+
+    .cell{
+        aspect-ratio:1;
+        background:rgba(15,20,35,.9);
+        border:2px solid var(--grid);
+        border-radius:20px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:4rem;
+        cursor:pointer;
+        transition:.15s;
+        position:relative;
+        user-select:none;
+    }
+
+    .cell:hover{
+        transform:scale(1.03);
+        border-color:#5c73ff;
+        box-shadow:0 0 18px #324fff;
+    }
+
+    .x{
+        color:var(--x-color);
+        text-shadow:
+            0 0 10px var(--x-color),
+            0 0 25px var(--x-color);
+    }
+
+    .o{
+        color:var(--o-color);
+        text-shadow:
+            0 0 10px var(--o-color),
+            0 0 25px var(--o-color);
+    }
+
+    .oldest-x{
+        animation:xPulse 1s infinite;
+        border-color:var(--x-color);
+    }
+
+    .oldest-o{
+        animation:oPulse 1s infinite;
+        border-color:var(--o-color);
+    }
+
+    @keyframes xPulse{
+        0%{ box-shadow:0 0 10px var(--x-color);}
+        50%{ box-shadow:0 0 25px var(--x-color);}
+        100%{ box-shadow:0 0 10px var(--x-color);}
+    }
+
+    @keyframes oPulse{
+        0%{ box-shadow:0 0 10px var(--o-color);}
+        50%{ box-shadow:0 0 25px var(--o-color);}
+        100%{ box-shadow:0 0 10px var(--o-color);}
+    }
+
+    .controls{
+        margin-top:24px;
+        display:flex;
+        gap:12px;
+        justify-content:center;
+        flex-wrap:wrap;
+    }
+
+    button{
+        background:#151a31;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:14px;
+        font-family:'Orbitron',sans-serif;
+        cursor:pointer;
+        transition:.15s;
+        letter-spacing:1px;
+    }
+
+    button:hover{
+        transform:translateY(-2px);
+        box-shadow:0 0 15px #4a6bff;
+    }
+
+    .settings-btn{
+        position:absolute;
+        top:0;
+        right:0;
+        font-size:1.4rem;
+        width:48px;
+        height:48px;
+        border-radius:50%;
+    }
+
+    .settings{
+        position:absolute;
+        top:60px;
+        right:0;
+        width:240px;
+        background:rgba(10,15,28,.97);
+        border:1px solid #3140aa;
+        border-radius:16px;
+        padding:16px;
+        display:none;
+        z-index:10;
+        text-align:left;
+        box-shadow:0 0 20px #2036c7;
+    }
+
+    .settings.open{
+        display:block;
+    }
+
+    .settings label{
+        display:block;
+        margin-top:10px;
+        margin-bottom:5px;
+        font-size:.85rem;
+    }
+
+    input[type=color]{
+        width:100%;
+        height:40px;
+        border:none;
+        background:none;
+        cursor:pointer;
+    }
+
+    .flash{
+        animation:flash .15s;
+    }
+
+    @keyframes flash{
+        from{ transform:scale(1.08);}
+        to{ transform:scale(1);}
+    }
+
+    .danger{
+        animation:dangerPulse .3s infinite;
+    }
+
+    @keyframes dangerPulse{
+        0%{ transform:scale(1);}
+        50%{ transform:scale(1.02);}
+        100%{ transform:scale(1);}
+    }
+
+</style>
+</head>
+<body>
+
+<div class="game" id="game">
+
+    <button class="settings-btn" id="settingsBtn">⚙</button>
+
+    <div class="settings" id="settingsPanel">
+        <label>X Color</label>
+        <input type="color" id="xColor" value="#ff2b2b">
+
+        <label>O Color</label>
+        <input type="color" id="oColor" value="#2b8cff">
+
+        <label>Theme Presets</label>
+
+        <button onclick="setTheme('#ff2b2b','#2b8cff')">Classic</button>
+        <button onclick="setTheme('#00ff99','#ff00ff')">Cyber</button>
+        <button onclick="setTheme('#ffd000','#00e5ff')">Arcade</button>
+    </div>
+
+    <h1>NEON SHIFT</h1>
+
+    <div class="topbar">
+        <div class="status" id="status">Press Start</div>
+        <div class="timer" id="timer">8.00</div>
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <div class="controls">
+        <button id="startBtn">START GAME</button>
+        <button id="resetBtn">RESET</button>
+    </div>
+
+</div>
+
+<script>
+
+const boardEl = document.getElementById("board");
+const statusEl = document.getElementById("status");
+const timerEl = document.getElementById("timer");
+const startBtn = document.getElementById("startBtn");
+
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settingsPanel");
+
+settingsBtn.onclick = () => {
+    settingsPanel.classList.toggle("open");
+};
+
+document.getElementById("xColor").addEventListener("input", e=>{
+    document.documentElement.style.setProperty('--x-color',e.target.value);
+});
+
+document.getElementById("oColor").addEventListener("input", e=>{
+    document.documentElement.style.setProperty('--o-color',e.target.value);
+});
+
+function setTheme(x,o){
+    document.documentElement.style.setProperty('--x-color',x);
+    document.documentElement.style.setProperty('--o-color',o);
+
+    document.getElementById("xColor").value = x;
+    document.getElementById("oColor").value = o;
+}
+
+let board = Array(9).fill("");
+let currentPlayer = "X";
+let moveHistory = {
+    X:[],
+    O:[]
+};
+
+let gameStarted = false;
+let gameOver = false;
+
+let timerInterval;
+let currentTime = 8;
+
+let gameStartTime;
+
+function createBoard(){
+    boardEl.innerHTML = "";
+
+    for(let i=0;i<9;i++){
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.dataset.index = i;
+
+        cell.addEventListener("click", ()=>handleMove(i));
+
+        boardEl.appendChild(cell);
+    }
+
+    renderBoard();
+}
+
+function renderBoard(){
+
+    const cells = document.querySelectorAll(".cell");
+
+    cells.forEach((cell,i)=>{
+        cell.className = "cell";
+        cell.textContent = "";
+
+        if(board[i]){
+            cell.textContent = board[i];
+            cell.classList.add(board[i].toLowerCase());
+        }
+    });
+
+    highlightOldest();
+}
+
+function highlightOldest(){
+
+    const cells = document.querySelectorAll(".cell");
+
+    const xOldest = moveHistory.X[0];
+    const oOldest = moveHistory.O[0];
+
+    if(xOldest !== undefined){
+        cells[xOldest].classList.add("oldest-x");
+    }
+
+    if(oOldest !== undefined){
+        cells[oOldest].classList.add("oldest-o");
+    }
+}
+
+function handleMove(index){
+
+    if(!gameStarted || gameOver) return;
+
+    if(board[index] !== "") return;
+
+    const playerMoves = moveHistory[currentPlayer];
+
+    if(playerMoves.length < 3){
+
+        board[index] = currentPlayer;
+        playerMoves.push(index);
+
+    } else {
+
+        const oldest = playerMoves.shift();
+
+        board[oldest] = "";
+
+        board[index] = currentPlayer;
+        playerMoves.push(index);
+    }
+
+    renderBoard();
+
+    if(checkWin(currentPlayer)){
+        statusEl.textContent = currentPlayer + " WINS!";
+        gameOver = true;
+        clearInterval(timerInterval);
+        return;
+    }
+
+    switchPlayer();
+
+    resetTurnTimer();
+}
+
+function switchPlayer(){
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    statusEl.textContent = currentPlayer + "'s TURN";
+}
+
+function checkWin(player){
+
+    const wins = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ];
+
+    return wins.some(combo=>{
+        return combo.every(i=>board[i] === player);
+    });
+}
+
+function getTurnLimit(){
+
+    const elapsed = (Date.now() - gameStartTime) / 1000;
+
+    if(elapsed < 30) return 8;
+    if(elapsed < 55) return 7;
+    if(elapsed < 80) return 6;
+    if(elapsed < 105) return 5;
+    if(elapsed < 130) return 4;
+    if(elapsed < 160) return 3;
+    if(elapsed < 240) return 2;
+
+    // Sudden death
+    if(elapsed < 270) return 1.5;
+    if(elapsed < 300) return 1;
+    if(elapsed < 330) return 0.75;
+
+    return 0.5;
+}
+
+function resetTurnTimer(){
+
+    clearInterval(timerInterval);
+
+    currentTime = getTurnLimit();
+
+    updateTimerVisual();
+
+    timerInterval = setInterval(()=>{
+
+        currentTime -= 0.01;
+
+        updateTimerVisual();
+
+        if(currentTime <= 0){
+
+            clearInterval(timerInterval);
+
+            gameOver = true;
+
+            const loser = currentPlayer;
+            const winner = currentPlayer === "X" ? "O" : "X";
+
+            statusEl.textContent = loser + " RAN OUT OF TIME! " + winner + " WINS!";
+        }
+
+    },10);
+}
+
+function updateTimerVisual(){
+
+    timerEl.textContent = currentTime.toFixed(2);
+
+    if(currentTime > 4){
+        timerEl.style.color = "#00ffe1";
+    } else if(currentTime > 2){
+        timerEl.style.color = "#ffe600";
+    } else if(currentTime > 1){
+        timerEl.style.color = "#ff7b00";
+    } else {
+        timerEl.style.color = "#ff2222";
+    }
+
+    if(currentTime < 1){
+        document.body.classList.add("danger");
+    } else {
+        document.body.classList.remove("danger");
+    }
+}
+
+function startGame(){
+
+    board = Array(9).fill("");
+
+    moveHistory = {
+        X:[],
+        O:[]
+    };
+
+    currentPlayer = "X";
+
+    gameStarted = true;
+    gameOver = false;
+
+    gameStartTime = Date.now();
+
+    statusEl.textContent = "X's TURN";
+
+    renderBoard();
+
+    resetTurnTimer();
+}
+
+document.getElementById("startBtn").addEventListener("click",startGame);
+
+document.getElementById("resetBtn").addEventListener("click",()=>{
+
+    clearInterval(timerInterval);
+
+    gameStarted = false;
+    gameOver = false;
+
+    board = Array(9).fill("");
+
+    moveHistory = {
+        X:[],
+        O:[]
+    };
+
+    currentPlayer = "X";
+
+    timerEl.textContent = "8.00";
+    timerEl.style.color = "#00ffe1";
+
+    statusEl.textContent = "Press Start";
+
+    renderBoard();
+});
+
+createBoard();
+
+</script>
+
+</body>
+</html>
