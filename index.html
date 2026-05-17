@@ -36,11 +36,8 @@ body::before {
   position: fixed;
   inset: 0;
   background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.06) 2px,
-    rgba(0,0,0,0.06) 4px
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px
   );
   pointer-events: none;
   z-index: 100;
@@ -97,17 +94,14 @@ body::after {
 .header-btns { display: flex; gap: 6px; }
 
 .icon-btn {
-  width: 34px;
-  height: 34px;
+  width: 34px; height: 34px;
   border-radius: 10px;
   background: var(--panel);
   border: 1px solid var(--border);
   color: var(--dim);
   font-size: 1rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
 }
 .icon-btn:hover {
@@ -117,10 +111,86 @@ body::after {
   transform: translateY(-1px);
 }
 
+/* ── Mode Selector ── */
+.mode-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 6px;
+}
+
+.mode-btn {
+  padding: 7px 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--dim);
+  text-align: center;
+}
+.mode-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.mode-btn.active {
+  background: rgba(50,90,220,0.25);
+  border-color: rgba(80,120,255,0.45);
+  color: #fff;
+  text-shadow: 0 0 8px rgba(100,150,255,0.6);
+  box-shadow: 0 0 10px rgba(50,90,220,0.2);
+}
+
+/* ── Difficulty Row ── */
+.diff-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 6px;
+  transition: opacity 0.3s, max-height 0.35s;
+  overflow: hidden;
+  max-height: 60px;
+}
+
+.diff-bar.hidden { opacity: 0.3; pointer-events: none; }
+
+.diff-btn {
+  padding: 7px 4px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--dim);
+  text-align: center;
+}
+.diff-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+
+.diff-btn[data-diff="easy"].active   { background: rgba(0,220,120,0.18); border-color: rgba(0,220,120,0.45); color: #00dc78; box-shadow: 0 0 10px rgba(0,220,120,0.2); }
+.diff-btn[data-diff="medium"].active { background: rgba(255,200,0,0.15); border-color: rgba(255,200,0,0.4);   color: #ffc800; box-shadow: 0 0 10px rgba(255,200,0,0.2); }
+.diff-btn[data-diff="hard"].active   { background: rgba(255,50,80,0.18);  border-color: rgba(255,50,80,0.45);  color: #ff3250; box-shadow: 0 0 10px rgba(255,50,80,0.2); }
+
+/* Difficulty pip indicators on score panel */
+.diff-pips { display: flex; gap: 3px; align-items: center; }
+.pip { width: 5px; height: 5px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+.pip.on-easy   { background: #00dc78; box-shadow: 0 0 4px #00dc78; }
+.pip.on-medium { background: #ffc800; box-shadow: 0 0 4px #ffc800; }
+.pip.on-hard   { background: #ff3250; box-shadow: 0 0 4px #ff3250; }
+
 .settings-panel {
   position: absolute;
-  top: 46px;
-  right: 0;
+  top: 46px; right: 0;
   width: 200px;
   background: rgba(8,12,24,0.97);
   border: 1px solid #2a3a70;
@@ -150,26 +220,18 @@ body::after {
 }
 
 input[type=color] {
-  width: 100%;
-  height: 32px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-radius: 6px;
+  width: 100%; height: 32px;
+  border: none; background: none;
+  cursor: pointer; border-radius: 6px;
 }
 
 .preset-btns { display: flex; gap: 5px; margin-top: 8px; }
-
 .preset-btns button {
-  flex: 1;
-  padding: 5px 0;
-  font-size: 0.6rem;
-  letter-spacing: 0.5px;
-  background: var(--panel);
-  color: var(--text);
+  flex: 1; padding: 5px 0;
+  font-size: 0.6rem; letter-spacing: 0.5px;
+  background: var(--panel); color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 7px;
-  cursor: pointer;
+  border-radius: 7px; cursor: pointer;
   font-family: 'Orbitron', sans-serif;
   transition: all 0.15s;
 }
@@ -194,35 +256,27 @@ input[type=color] {
 .score-side.right { flex-direction: row-reverse; }
 
 .score-marker {
-  width: 28px;
-  height: 28px;
+  width: 28px; height: 28px;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
 }
+.score-marker.x { background: rgba(255,51,85,0.15); color: var(--x); border: 1px solid rgba(255,51,85,0.4); }
+.score-marker.o { background: rgba(0,200,255,0.12); color: var(--o); border: 1px solid rgba(0,200,255,0.3); }
 
-.score-marker.x {
-  background: rgba(255,51,85,0.15);
-  color: var(--x);
-  border: 1px solid rgba(255,51,85,0.4);
+.score-label {
+  font-size: 0.5rem;
+  letter-spacing: 1.5px;
+  color: var(--dim);
+  text-align: center;
+  line-height: 1.2;
 }
-
-.score-marker.o {
-  background: rgba(0,200,255,0.12);
-  color: var(--o);
-  border: 1px solid rgba(0,200,255,0.3);
-}
+.score-label.bot { color: #9a6fff; }
 
 .score-num {
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.4rem; font-weight: 700;
   transition: all 0.3s;
 }
-
 .score-num.x { color: var(--x); text-shadow: 0 0 12px var(--glow-x); }
 .score-num.o { color: var(--o); text-shadow: 0 0 12px var(--glow-o); }
 .score-sep { font-size: 0.7rem; color: var(--dim); letter-spacing: 1px; }
@@ -242,36 +296,27 @@ input[type=color] {
   transition: color 0.3s;
   min-height: 20px;
 }
-
 .status.active-x { color: var(--x); }
 .status.active-o { color: var(--o); }
 .status.win { color: #ffd700; font-size: 0.85rem; }
+.status.bot-thinking { color: #9a6fff; }
 
 .timer-wrap { display: flex; align-items: center; gap: 6px; }
-
 .timer-bar-bg {
-  width: 70px;
-  height: 5px;
+  width: 70px; height: 5px;
   background: rgba(255,255,255,0.08);
-  border-radius: 99px;
-  overflow: hidden;
+  border-radius: 99px; overflow: hidden;
 }
-
 .timer-bar {
-  height: 100%;
-  border-radius: 99px;
+  height: 100%; border-radius: 99px;
   background: #00ffe1;
   transition: width 0.1s linear, background 0.4s;
 }
-
 .timer-val {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #00ffe1;
-  min-width: 36px;
-  text-align: right;
-  transition: color 0.3s;
+  font-size: 0.95rem; font-weight: 700;
+  color: #00ffe1; min-width: 36px;
+  text-align: right; transition: color 0.3s;
 }
 
 .board {
@@ -286,46 +331,34 @@ input[type=color] {
   background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
   border: 1px solid var(--border);
   border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: clamp(1.8rem, 8vw, 2.4rem);
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   user-select: none;
 }
-
-.cell:hover:not(.taken) {
+.cell:hover:not(.taken):not(.locked) {
   border-color: rgba(100,140,255,0.5);
   box-shadow: 0 0 16px rgba(60,100,255,0.2), inset 0 0 20px rgba(60,100,255,0.05);
   transform: scale(1.02);
 }
+.cell.taken, .cell.locked { cursor: default; }
+.cell.locked { opacity: 0.6; }
 
-.cell.taken { cursor: default; }
+.cell .mark { position: relative; z-index: 1; transform-origin: center; }
 
-.cell .mark {
-  position: relative;
-  z-index: 1;
-  transform-origin: center;
-}
-
-/* Pop animation — short & snappy */
 .cell.place-anim .mark {
   animation: markPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
-
 @keyframes markPop {
   from { opacity: 0; transform: scale(0.5); }
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Vanish on the OLD cell — purely visual, non-blocking */
 .cell.vanish-anim {
   animation: markVanish 0.18s ease-in both;
 }
-
 @keyframes markVanish {
   from { opacity: 1; transform: scale(1); }
   to { opacity: 0; transform: scale(0.5); }
@@ -339,7 +372,6 @@ input[type=color] {
   box-shadow: 0 0 14px var(--glow-x), inset 0 0 14px rgba(255,51,85,0.06);
   animation: warnPulseX 1.2s ease-in-out infinite;
 }
-
 .cell.warn-o {
   border-color: rgba(0,200,255,0.55);
   box-shadow: 0 0 14px var(--glow-o), inset 0 0 14px rgba(0,200,255,0.06);
@@ -350,18 +382,27 @@ input[type=color] {
   0%,100% { box-shadow: 0 0 8px var(--glow-x), inset 0 0 10px rgba(255,51,85,0.04); }
   50% { box-shadow: 0 0 20px var(--glow-x), inset 0 0 18px rgba(255,51,85,0.1); }
 }
-
 @keyframes warnPulseO {
   0%,100% { box-shadow: 0 0 8px var(--glow-o), inset 0 0 10px rgba(0,200,255,0.04); }
   50% { box-shadow: 0 0 20px var(--glow-o), inset 0 0 18px rgba(0,200,255,0.1); }
 }
 
 .cell.win-flash { animation: winFlash 0.5s ease both; }
-
 @keyframes winFlash {
   0% { transform: scale(1); }
   50% { transform: scale(1.08); filter: brightness(1.4); }
   100% { transform: scale(1); }
+}
+
+/* Bot thinking pulse on board */
+.cell.bot-hint {
+  border-color: rgba(154,111,255,0.5);
+  box-shadow: 0 0 16px rgba(154,111,255,0.3);
+  animation: botPulse 0.6s ease-in-out infinite;
+}
+@keyframes botPulse {
+  0%,100% { box-shadow: 0 0 8px rgba(154,111,255,0.25); }
+  50% { box-shadow: 0 0 22px rgba(154,111,255,0.5); }
 }
 
 @keyframes dangerShake {
@@ -369,17 +410,13 @@ input[type=color] {
   25% { transform: translateX(-2px); }
   75% { transform: translateX(2px); }
 }
-
 .danger-anim { animation: dangerShake 0.15s ease infinite; }
 
 .controls { display: flex; gap: 8px; }
-
 .btn {
-  flex: 1;
-  padding: 10px;
+  flex: 1; padding: 10px;
   font-family: 'Orbitron', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.7rem; font-weight: 700;
   letter-spacing: 2px;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -388,19 +425,16 @@ input[type=color] {
   background: var(--panel);
   color: var(--text);
 }
-
 .btn-primary {
   background: linear-gradient(135deg, rgba(50,90,220,0.3), rgba(80,50,200,0.3));
   border-color: rgba(80,120,255,0.5);
   color: #fff;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(50,100,255,0.3);
   border-color: rgba(100,150,255,0.6);
 }
-
 .btn:active { transform: translateY(0); }
 
 @keyframes scorePop {
@@ -410,180 +444,94 @@ input[type=color] {
 }
 .score-pop { animation: scorePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-/* ===== TUTORIAL MODAL ===== */
+/* ── Tutorial Modal ── */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0,0,0,0.85);
   z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(4px);
   animation: fadeIn 0.3s ease both;
 }
-
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from { opacity: 1; } to { opacity: 0; }
 }
-
 .modal {
   width: min(92vw, 380px);
   background: rgba(8,12,24,0.98);
   border: 1px solid rgba(50,90,220,0.5);
-  border-radius: 20px;
-  padding: 22px;
+  border-radius: 20px; padding: 22px;
   box-shadow: 0 0 60px rgba(30,60,200,0.25), 0 20px 60px rgba(0,0,0,0.6);
   animation: modalIn 0.35s cubic-bezier(0.34, 1.3, 0.64, 1) both;
 }
-
 @keyframes modalIn {
   from { opacity: 0; transform: scale(0.85) translateY(20px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
-
 .modal-title {
-  font-size: 0.95rem;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 4px;
+  font-size: 0.95rem; font-weight: 900;
+  letter-spacing: 4px; color: #fff;
+  text-align: center; margin-bottom: 4px;
   text-shadow: 0 0 20px rgba(100,150,255,0.8);
 }
-
 .tut-step-num {
   font-family: 'Share Tech Mono', monospace;
-  text-align: center;
-  font-size: 0.65rem;
-  color: var(--dim);
-  letter-spacing: 2px;
+  text-align: center; font-size: 0.65rem;
+  color: var(--dim); letter-spacing: 2px;
   margin-bottom: 18px;
 }
-
 .tut-board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin: 14px 0;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 6px; margin: 14px 0;
 }
-
 .tut-cell {
   aspect-ratio: 1;
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
   border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  transition: all 0.3s;
-  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; transition: all 0.3s; position: relative;
 }
-
 .tut-cell .mark { transition: all 0.3s; }
-
-.tut-cell.highlight-x {
-  border-color: rgba(255,51,85,0.6);
-  box-shadow: 0 0 12px var(--glow-x);
-  background: rgba(255,51,85,0.06);
-  animation: warnPulseX 1.2s ease-in-out infinite;
-}
-
-.tut-cell.highlight-o {
-  border-color: rgba(0,200,255,0.5);
-  box-shadow: 0 0 12px var(--glow-o);
-  background: rgba(0,200,255,0.05);
-  animation: warnPulseO 1.2s ease-in-out infinite;
-}
-
-.tut-cell.drop-in .mark {
-  animation: markPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-.tut-cell.fade-out .mark {
-  animation: markVanish 0.18s ease both;
-}
+.tut-cell.highlight-x { border-color: rgba(255,51,85,0.6); box-shadow: 0 0 12px var(--glow-x); background: rgba(255,51,85,0.06); animation: warnPulseX 1.2s ease-in-out infinite; }
+.tut-cell.highlight-o { border-color: rgba(0,200,255,0.5); box-shadow: 0 0 12px var(--glow-o); background: rgba(0,200,255,0.05); animation: warnPulseO 1.2s ease-in-out infinite; }
+.tut-cell.drop-in .mark { animation: markPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.tut-cell.fade-out .mark { animation: markVanish 0.18s ease both; }
 
 .tut-desc {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.72rem;
-  line-height: 1.65;
-  color: var(--text);
-  text-align: center;
-  margin-bottom: 14px;
-  min-height: 52px;
+  font-size: 0.72rem; line-height: 1.65;
+  color: var(--text); text-align: center;
+  margin-bottom: 14px; min-height: 52px;
 }
-
 .tut-desc span.hi-x { color: var(--x); font-weight: 700; }
 .tut-desc span.hi-o { color: var(--o); font-weight: 700; }
 .tut-desc span.hi-y { color: #ffd700; font-weight: 700; }
 
-.tut-nav {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: space-between;
-}
-
+.tut-nav { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
 .tut-dots { display: flex; gap: 5px; align-items: center; }
-
-.tut-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--border);
-  transition: all 0.3s;
-}
-
-.tut-dot.active {
-  background: #4a7fff;
-  box-shadow: 0 0 8px rgba(74,127,255,0.6);
-  width: 18px;
-  border-radius: 3px;
-}
+.tut-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+.tut-dot.active { background: #4a7fff; box-shadow: 0 0 8px rgba(74,127,255,0.6); width: 18px; border-radius: 3px; }
 
 .tut-btn {
   padding: 8px 18px;
   font-family: 'Orbitron', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
+  font-size: 0.65rem; font-weight: 700;
   letter-spacing: 1.5px;
   border: 1px solid rgba(80,120,255,0.4);
-  border-radius: 10px;
-  cursor: pointer;
+  border-radius: 10px; cursor: pointer;
   transition: all 0.2s;
-  background: rgba(40,70,200,0.25);
-  color: #fff;
+  background: rgba(40,70,200,0.25); color: #fff;
 }
-
-.tut-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(50,100,255,0.3);
-  background: rgba(40,70,200,0.4);
-}
-
-.tut-btn.dim {
-  background: transparent;
-  border-color: var(--border);
-  color: var(--dim);
-}
-
-.tut-btn.dim:hover {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(100,120,160,0.5);
-  color: var(--text);
-}
+.tut-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(50,100,255,0.3); background: rgba(40,70,200,0.4); }
+.tut-btn.dim { background: transparent; border-color: var(--border); color: var(--dim); }
+.tut-btn.dim:hover { background: rgba(255,255,255,0.04); border-color: rgba(100,120,160,0.5); color: var(--text); }
 
 .particle {
-  position: fixed;
-  pointer-events: none;
-  border-radius: 50%;
-  z-index: 300;
+  position: fixed; pointer-events: none;
+  border-radius: 50%; z-index: 300;
   animation: particleFly var(--dur) ease-out both;
 }
-
 @keyframes particleFly {
   from { transform: translate(0,0) scale(1); opacity: 1; }
   to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
@@ -591,7 +539,6 @@ input[type=color] {
 </style>
 </head>
 <body>
-
 <div class="wrap" id="wrap">
   <div class="header">
     <div class="logo">NEON SHIFT</div>
@@ -614,15 +561,34 @@ input[type=color] {
     </div>
   </div>
 
+  <!-- Mode selector -->
+  <div class="mode-bar">
+    <button class="mode-btn active" id="modeHuman" onclick="setMode('human')">👥 2 PLAYERS</button>
+    <button class="mode-btn" id="modeBot" onclick="setMode('bot')">🤖 VS BOT</button>
+  </div>
+
+  <!-- Difficulty selector (only active in bot mode) -->
+  <div class="diff-bar hidden" id="diffBar">
+    <button class="diff-btn active" data-diff="easy" onclick="setDiff('easy')">EASY</button>
+    <button class="diff-btn" data-diff="medium" onclick="setDiff('medium')">MEDIUM</button>
+    <button class="diff-btn" data-diff="hard" onclick="setDiff('hard')">HARD</button>
+  </div>
+
   <div class="scores">
     <div class="score-side left">
       <div class="score-marker x">X</div>
-      <div class="score-num x" id="scoreX">0</div>
+      <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;">
+        <div class="score-num x" id="scoreX">0</div>
+        <div class="score-label" id="labelX">PLAYER 1</div>
+      </div>
     </div>
     <div class="score-sep">VS</div>
     <div class="score-side right">
-      <div class="score-num o" id="scoreO">0</div>
       <div class="score-marker o">O</div>
+      <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-end;">
+        <div class="score-num o" id="scoreO">0</div>
+        <div class="score-label" id="labelO">PLAYER 2</div>
+      </div>
     </div>
   </div>
 
@@ -669,6 +635,40 @@ let timeLeft = 8;
 let timerLimit = 8;
 let gameStart = 0;
 let scores = { X: 0, O: 0 };
+let gameMode = 'human'; // 'human' | 'bot'
+let botDiff = 'easy';   // 'easy' | 'medium' | 'hard'
+let botThinkTimer = null;
+let botLocked = false;   // prevent player clicks during bot turn
+
+// ── Mode / Difficulty UI ───────────────────────────────────────────────
+function setMode(m) {
+  gameMode = m;
+  document.getElementById('modeHuman').classList.toggle('active', m === 'human');
+  document.getElementById('modeBot').classList.toggle('active', m === 'bot');
+  document.getElementById('diffBar').classList.toggle('hidden', m === 'human');
+  updateScoreLabels();
+  // Restart if running
+  if (started) startGame();
+}
+
+function setDiff(d) {
+  botDiff = d;
+  document.querySelectorAll('.diff-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.diff === d));
+  if (started) startGame();
+}
+
+function updateScoreLabels() {
+  document.getElementById('labelX').textContent = 'PLAYER 1';
+  document.getElementById('labelX').className = 'score-label';
+  if (gameMode === 'bot') {
+    document.getElementById('labelO').textContent = 'BOT';
+    document.getElementById('labelO').className = 'score-label bot';
+  } else {
+    document.getElementById('labelO').textContent = 'PLAYER 2';
+    document.getElementById('labelO').className = 'score-label';
+  }
+}
 
 // ── Settings ───────────────────────────────────────────────────────────
 document.getElementById('settingsBtn').onclick = () =>
@@ -699,7 +699,7 @@ function buildBoard() {
     const c = document.createElement('div');
     c.className = 'cell';
     c.dataset.i = i;
-    c.addEventListener('click', () => move(i));
+    c.addEventListener('click', () => onCellClick(i));
     el.appendChild(c);
   }
 }
@@ -710,6 +710,7 @@ function renderBoard(animIdx = -1) {
     const v = board[i];
     let cls = 'cell' + (v ? ' taken' : '');
     if (i === animIdx) cls += ' place-anim';
+    if (botLocked && !v) cls += ' locked';
     c.className = cls;
     c.innerHTML = v
       ? `<span class="mark ${v === 'X' ? 'x-mark' : 'o-mark'}">${v}</span>`
@@ -726,27 +727,28 @@ function applyWarnings() {
   if (history.O.length === 3) cells[history.O[0]].classList.add('warn-o');
 }
 
-// ── Move Logic — fully synchronous, no awaiting animations ─────────────
+// ── Cell click handler ─────────────────────────────────────────────────
+function onCellClick(idx) {
+  if (!started || over || botLocked) return;
+  // In bot mode, only allow X (human) to click
+  if (gameMode === 'bot' && current === 'O') return;
+  move(idx);
+}
+
+// ── Move Logic ─────────────────────────────────────────────────────────
 function move(idx) {
   if (!started || over || board[idx]) return;
 
   const ph = history[current];
 
-  // If player already has 3 pieces, remove oldest immediately
-  // but fire a visual-only vanish animation (non-blocking)
   if (ph.length === 3) {
     const removeIdx = ph.shift();
     const rc = document.querySelectorAll('#board .cell')[removeIdx];
-    // Trigger vanish CSS animation — purely cosmetic, doesn't block
     rc.classList.add('vanish-anim');
-    // After animation ends, clear the cell (board already updated below)
-    setTimeout(() => {
-      if (rc) rc.classList.remove('vanish-anim');
-    }, 180);
+    setTimeout(() => { if (rc) rc.classList.remove('vanish-anim'); }, 180);
     board[removeIdx] = '';
   }
 
-  // Place new piece immediately
   board[idx] = current;
   ph.push(idx);
   renderBoard(idx);
@@ -756,25 +758,177 @@ function move(idx) {
     celebrate(win, current);
     return;
   }
+
   current = current === 'X' ? 'O' : 'X';
-  setStatus(`${current}'S TURN`, 'active-' + current.toLowerCase());
-  resetTimer();
+
+  if (gameMode === 'bot' && current === 'O' && !over) {
+    // Bot's turn — lock board and schedule bot move
+    botLocked = true;
+    setStatus('BOT THINKING...', 'bot-thinking');
+    resetTimer(); // still counts time for bot
+    scheduleBotMove();
+  } else {
+    setStatus(`${current}'S TURN`, 'active-' + current.toLowerCase());
+    resetTimer();
+  }
 }
 
+// ── Bot AI ─────────────────────────────────────────────────────────────
+// Simulate the Shift-Tac-Toe state for lookahead:
+// We need to model: board, histX, histO and the shifting rule.
+
+function getEmptyIndices(b) {
+  return b.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
+}
+
+function checkWinState(b, p) {
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  return lines.some(l => l.every(i => b[i] === p));
+}
+
+// Apply a move to a cloned state; returns new {board, hX, hO} or null if invalid
+function applyMove(state, idx, player) {
+  const b = [...state.board];
+  const hX = [...state.hX];
+  const hO = [...state.hO];
+  if (b[idx] !== '') return null;
+
+  const h = player === 'X' ? hX : hO;
+  if (h.length === 3) {
+    const rem = h.shift();
+    b[rem] = '';
+  }
+  b[idx] = player;
+  h.push(idx);
+  return { board: b, hX, hO };
+}
+
+// Heuristic: count open winning lines for player (lines with no opponent pieces)
+function scoreBoard(b, p, opp) {
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  let s = 0;
+  for (const l of lines) {
+    const ps = l.filter(i => b[i] === p).length;
+    const os = l.filter(i => b[i] === opp).length;
+    if (os === 0) s += ps * ps; // open lines for p
+    if (ps === 0) s -= os * os; // penalize open lines for opp
+  }
+  return s;
+}
+
+function minimax(state, depth, isMax, alpha, beta, botPlayer, humanPlayer) {
+  const b = state.board;
+  if (checkWinState(b, botPlayer)) return 100 - depth;
+  if (checkWinState(b, humanPlayer)) return depth - 100;
+  if (depth === 0) return scoreBoard(b, botPlayer, humanPlayer);
+
+  const empty = getEmptyIndices(b);
+  if (empty.length === 0) return 0;
+
+  const player = isMax ? botPlayer : humanPlayer;
+  let best = isMax ? -Infinity : Infinity;
+
+  for (const idx of empty) {
+    const ns = applyMove(state, idx, player);
+    if (!ns) continue;
+    const val = minimax(ns, depth - 1, !isMax, alpha, beta, botPlayer, humanPlayer);
+    if (isMax) {
+      best = Math.max(best, val);
+      alpha = Math.max(alpha, best);
+    } else {
+      best = Math.min(best, val);
+      beta = Math.min(beta, best);
+    }
+    if (beta <= alpha) break;
+  }
+  return best;
+}
+
+function getBotMove() {
+  const state = { board: [...board], hX: [...history.X], hO: [...history.O] };
+  const empty = getEmptyIndices(board);
+  if (empty.length === 0) return -1;
+
+  if (botDiff === 'easy') {
+    // 80% random, 20% look 1-deep for immediate wins/blocks
+    if (Math.random() < 0.80) return empty[Math.floor(Math.random() * empty.length)];
+    // Check if any move wins immediately
+    for (const idx of empty) {
+      const ns = applyMove(state, idx, 'O');
+      if (ns && checkWinState(ns.board, 'O')) return idx;
+    }
+    return empty[Math.floor(Math.random() * empty.length)];
+  }
+
+  if (botDiff === 'medium') {
+    // Always take winning move; block immediate threats; else ~50% random
+    for (const idx of empty) {
+      const ns = applyMove(state, idx, 'O');
+      if (ns && checkWinState(ns.board, 'O')) return idx;
+    }
+    for (const idx of empty) {
+      const ns = applyMove(state, idx, 'X');
+      if (ns && checkWinState(ns.board, 'X')) return idx; // block
+    }
+    if (Math.random() < 0.5) return empty[Math.floor(Math.random() * empty.length)];
+    // 2-ply lookahead
+    let best = -Infinity, bestIdx = empty[0];
+    for (const idx of empty) {
+      const ns = applyMove(state, idx, 'O');
+      if (!ns) continue;
+      const val = minimax(ns, 2, false, -Infinity, Infinity, 'O', 'X');
+      if (val > best) { best = val; bestIdx = idx; }
+    }
+    return bestIdx;
+  }
+
+  // HARD: full minimax depth 6
+  let best = -Infinity, bestIdx = empty[0];
+  for (const idx of empty) {
+    const ns = applyMove(state, idx, 'O');
+    if (!ns) continue;
+    const val = minimax(ns, 6, false, -Infinity, Infinity, 'O', 'X');
+    if (val > best) { best = val; bestIdx = idx; }
+  }
+  return bestIdx;
+}
+
+function scheduleBotMove() {
+  if (botThinkTimer) clearTimeout(botThinkTimer);
+  // Slight delay so the "thinking" state is visible
+  const delay = botDiff === 'easy' ? 400 : botDiff === 'medium' ? 700 : 1000;
+  const jitter = Math.random() * 300;
+
+  // Show bot-hint shimmer on the cell it will pick (only for hard, computed early)
+  botThinkTimer = setTimeout(() => {
+    if (!started || over) return;
+    const idx = getBotMove();
+    if (idx === -1) return;
+
+    // Show hint pulse briefly
+    const cells = document.querySelectorAll('#board .cell');
+    if (cells[idx]) cells[idx].classList.add('bot-hint');
+
+    setTimeout(() => {
+      if (cells[idx]) cells[idx].classList.remove('bot-hint');
+      botLocked = false;
+      move(idx);
+    }, 180);
+  }, delay + jitter);
+}
+
+// ── Check win ──────────────────────────────────────────────────────────
 function checkWin(p) {
-  const lines = [
-    [0,1,2],[3,4,5],[6,7,8],
-    [0,3,6],[1,4,7],[2,5,8],
-    [0,4,8],[2,4,6]
-  ];
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
   return lines.find(l => l.every(i => board[i] === p)) || null;
 }
 
 // ── Celebrate ──────────────────────────────────────────────────────────
 function celebrate(line, p) {
   over = true;
-  clearInterval(timerInterval);
-  timerInterval = null;
+  if (botThinkTimer) { clearTimeout(botThinkTimer); botThinkTimer = null; }
+  botLocked = false;
+  clearInterval(timerInterval); timerInterval = null;
 
   scores[p]++;
   const se = document.getElementById(`score${p}`);
@@ -783,19 +937,22 @@ function celebrate(line, p) {
   setTimeout(() => se.classList.remove('score-pop'), 500);
 
   const cells = document.querySelectorAll('#board .cell');
-  line.forEach((i, n) => {
-    setTimeout(() => cells[i].classList.add('win-flash'), n * 80);
-  });
+  line.forEach((i, n) => setTimeout(() => cells[i].classList.add('win-flash'), n * 80));
 
-  setStatus(`${p} WINS! 🏆`, 'win');
+  let label;
+  if (gameMode === 'bot') {
+    label = p === 'X' ? 'YOU WIN! 🏆' : 'BOT WINS! 🤖';
+  } else {
+    label = `${p} WINS! 🏆`;
+  }
+  setStatus(label, 'win');
   fireworks(p);
 }
 
 function fireworks(p) {
   const color = getComputedStyle(document.documentElement)
     .getPropertyValue(p === 'X' ? '--x' : '--o').trim();
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight / 2;
+  const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
   for (let i = 0; i < 28; i++) {
     const el = document.createElement('div');
     el.className = 'particle';
@@ -804,14 +961,7 @@ function fireworks(p) {
     const tx = Math.cos(angle * Math.PI / 180) * dist;
     const ty = Math.sin(angle * Math.PI / 180) * dist;
     const size = 4 + Math.random() * 6;
-    el.style.cssText = `
-      left:${cx}px; top:${cy}px;
-      width:${size}px; height:${size}px;
-      background:${color};
-      box-shadow: 0 0 ${size * 2}px ${color};
-      --tx:${tx}px; --ty:${ty}px;
-      --dur:${0.5 + Math.random() * 0.5}s;
-    `;
+    el.style.cssText = `left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;background:${color};box-shadow:0 0 ${size*2}px ${color};--tx:${tx}px;--ty:${ty}px;--dur:${0.5+Math.random()*0.5}s;`;
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 1100);
   }
@@ -842,6 +992,8 @@ function resetTimer() {
     updateTimer();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
+      if (botThinkTimer) { clearTimeout(botThinkTimer); botThinkTimer = null; }
+      botLocked = false;
       over = true;
       const w = current === 'X' ? 'O' : 'X';
       scores[w]++;
@@ -849,7 +1001,13 @@ function resetTimer() {
       se.textContent = scores[w];
       se.classList.add('score-pop');
       setTimeout(() => se.classList.remove('score-pop'), 500);
-      setStatus(`${current} TIMED OUT! ${w} WINS!`, 'win');
+      let msg;
+      if (gameMode === 'bot') {
+        msg = current === 'X' ? `YOU TIMED OUT! BOT WINS!` : `BOT TIMED OUT! YOU WIN! 🏆`;
+      } else {
+        msg = `${current} TIMED OUT! ${w} WINS!`;
+      }
+      setStatus(msg, 'win');
       fireworks(w);
     }
   }, 50);
@@ -861,7 +1019,6 @@ function updateTimer() {
   const val = document.getElementById('timerVal');
   bar.style.width = (pct * 100) + '%';
   val.textContent = timeLeft.toFixed(1);
-
   let col;
   if (pct > 0.5) col = '#00ffe1';
   else if (pct > 0.3) col = '#ffe600';
@@ -869,7 +1026,6 @@ function updateTimer() {
   else col = '#ff2222';
   val.style.color = col;
   bar.style.background = col;
-
   const wrap = document.getElementById('wrap');
   if (pct < 0.15) wrap.classList.add('danger-anim');
   else wrap.classList.remove('danger-anim');
@@ -877,6 +1033,8 @@ function updateTimer() {
 
 // ── Game Flow ──────────────────────────────────────────────────────────
 function startGame() {
+  if (botThinkTimer) { clearTimeout(botThinkTimer); botThinkTimer = null; }
+  botLocked = false;
   board = Array(9).fill('');
   history = { X: [], O: [] };
   current = 'X';
@@ -886,22 +1044,26 @@ function startGame() {
   buildBoard();
   setStatus("X'S TURN", 'active-x');
   resetTimer();
+  updateScoreLabels();
 }
 
 document.getElementById('startBtn').addEventListener('click', startGame);
+
 document.getElementById('resetBtn').addEventListener('click', () => {
-  clearInterval(timerInterval);
-  timerInterval = null;
-  started = false;
-  over = false;
+  if (botThinkTimer) { clearTimeout(botThinkTimer); botThinkTimer = null; }
+  clearInterval(timerInterval); timerInterval = null;
+  botLocked = false;
+  started = false; over = false;
   board = Array(9).fill('');
   history = { X: [], O: [] };
   current = 'X';
+  scores = { X: 0, O: 0 };
+  document.getElementById('scoreX').textContent = '0';
+  document.getElementById('scoreO').textContent = '0';
   buildBoard();
   setStatus('PRESS START', '');
   const val = document.getElementById('timerVal');
-  val.textContent = '8.0';
-  val.style.color = '#00ffe1';
+  val.textContent = '8.0'; val.style.color = '#00ffe1';
   document.getElementById('timerBar').style.width = '100%';
   document.getElementById('timerBar').style.background = '#00ffe1';
   document.getElementById('wrap').classList.remove('danger-anim');
@@ -917,22 +1079,10 @@ function setStatus(text, cls) {
 const TUT_SEEN_KEY = 'neonshift_tut_seen';
 
 const tutSteps = [
-  {
-    desc: `<span class="hi-x">X</span> and <span class="hi-o">O</span> take turns placing pieces.<br>Get <span class="hi-y">three in a row</span> to win — horizontally, vertically, or diagonally.`,
-    anim: 'intro'
-  },
-  {
-    desc: `Each player can only have <span class="hi-y">3 pieces</span> on the board at once.<br>On your 4th move, your <span class="hi-y">oldest piece disappears</span> — the board keeps shifting!`,
-    anim: 'shift'
-  },
-  {
-    desc: `When you have 3 pieces down, your <span class="hi-y">oldest piece glows</span> — that's the one that'll vanish on your next move. Plan around it!`,
-    anim: 'warn'
-  },
-  {
-    desc: `The <span class="hi-y">timer shrinks</span> as the game goes on — stay sharp! Run out of time and your opponent wins the round.`,
-    anim: 'timer'
-  },
+  { desc: `<span class="hi-x">X</span> and <span class="hi-o">O</span> take turns placing pieces.<br>Get <span class="hi-y">three in a row</span> to win — horizontally, vertically, or diagonally.`, anim: 'intro' },
+  { desc: `Each player can only have <span class="hi-y">3 pieces</span> on the board at once.<br>On your 4th move, your <span class="hi-y">oldest piece disappears</span> — the board keeps shifting!`, anim: 'shift' },
+  { desc: `When you have 3 pieces down, your <span class="hi-y">oldest piece glows</span> — that's the one that'll vanish on your next move. Plan around it!`, anim: 'warn' },
+  { desc: `The <span class="hi-y">timer shrinks</span> as the game goes on — stay sharp! Run out of time and your opponent wins the round.`, anim: 'timer' },
 ];
 
 let tutStep = 0;
@@ -951,7 +1101,6 @@ function closeTutorial() {
   o.style.animation = 'fadeOut 0.25s ease both';
   setTimeout(() => { o.style.display = 'none'; }, 250);
   if (tutAnimTimer) { clearTimeout(tutAnimTimer); tutAnimTimer = null; }
-  // Mark as seen so it never auto-opens again
   try { localStorage.setItem(TUT_SEEN_KEY, '1'); } catch(e) {}
 }
 
@@ -960,7 +1109,6 @@ function renderTutStep() {
   const step = tutSteps[tutStep];
   document.getElementById('tutStepNum').textContent = `STEP ${tutStep + 1} / ${tutSteps.length}`;
   document.getElementById('tutDesc').innerHTML = step.desc;
-
   const dots = document.getElementById('tutDots');
   dots.innerHTML = '';
   tutSteps.forEach((_, i) => {
@@ -968,10 +1116,8 @@ function renderTutStep() {
     d.className = 'tut-dot' + (i === tutStep ? ' active' : '');
     dots.appendChild(d);
   });
-
   document.getElementById('tutPrev').style.visibility = tutStep === 0 ? 'hidden' : 'visible';
   document.getElementById('tutNext').textContent = tutStep === tutSteps.length - 1 ? 'PLAY →' : 'NEXT →';
-
   runTutAnim(step.anim);
 }
 
@@ -980,103 +1126,61 @@ function makeTutBoard(state) {
   tb.innerHTML = '';
   for (let i = 0; i < 9; i++) {
     const c = document.createElement('div');
-    c.className = 'tut-cell';
-    c.id = `tc${i}`;
-    if (state[i]) {
-      c.innerHTML = `<span class="mark ${state[i] === 'X' ? 'x-mark' : 'o-mark'}">${state[i]}</span>`;
-    }
+    c.className = 'tut-cell'; c.id = `tc${i}`;
+    if (state[i]) c.innerHTML = `<span class="mark ${state[i]==='X'?'x-mark':'o-mark'}">${state[i]}</span>`;
     tb.appendChild(c);
   }
 }
 
-function scheduleAnim(fn, ms) {
-  tutAnimTimer = setTimeout(fn, ms);
-}
+function scheduleAnim(fn, ms) { tutAnimTimer = setTimeout(fn, ms); }
 
-async function runTutAnim(type) {
+function runTutAnim(type) {
   const tb = document.getElementById('tutBoard');
-
   if (type === 'intro') {
     makeTutBoard(Array(9).fill(''));
-    const seq = [[0,'X'],[1,'O'],[2,'X']];
-    let delay = 400;
-    seq.forEach(([i, p]) => {
+    let d = 400;
+    [[0,'X'],[1,'O'],[2,'X']].forEach(([i,p]) => {
       scheduleAnim(() => {
-        const tc = document.getElementById(`tc${i}`);
-        if (!tc) return;
-        tc.innerHTML = `<span class="mark ${p === 'X' ? 'x-mark' : 'o-mark'}">${p}</span>`;
-        tc.classList.add('drop-in');
-        setTimeout(() => tc.classList.remove('drop-in'), 200);
-      }, delay);
-      delay += 350;
+        const tc = document.getElementById(`tc${i}`); if (!tc) return;
+        tc.innerHTML = `<span class="mark ${p==='X'?'x-mark':'o-mark'}">${p}</span>`;
+        tc.classList.add('drop-in'); setTimeout(() => tc.classList.remove('drop-in'), 200);
+      }, d); d += 350;
     });
-    scheduleAnim(() => {
-      [0,1,2].forEach(i => document.getElementById(`tc${i}`)?.classList.add('highlight-x'));
-    }, delay + 200);
-  }
-
-  else if (type === 'shift') {
+    scheduleAnim(() => [0,1,2].forEach(i => document.getElementById(`tc${i}`)?.classList.add('highlight-x')), d+200);
+  } else if (type === 'shift') {
     makeTutBoard(['X','O','','X','O','','X','','']);
-    scheduleAnim(() => {
-      document.getElementById('tc0')?.classList.add('highlight-x');
-    }, 500);
+    scheduleAnim(() => document.getElementById('tc0')?.classList.add('highlight-x'), 500);
     scheduleAnim(() => {
       const tc0 = document.getElementById('tc0');
-      if (tc0) {
-        tc0.classList.add('fade-out');
-        setTimeout(() => {
-          if (tc0) { tc0.innerHTML = ''; tc0.classList.remove('highlight-x','fade-out'); }
-        }, 180);
-      }
+      if (tc0) { tc0.classList.add('fade-out'); setTimeout(() => { if(tc0){tc0.innerHTML='';tc0.classList.remove('highlight-x','fade-out');} }, 180); }
       scheduleAnim(() => {
         const tc7 = document.getElementById('tc7');
-        if (tc7) {
-          tc7.innerHTML = `<span class="mark x-mark">X</span>`;
-          tc7.classList.add('drop-in');
-          setTimeout(() => tc7.classList.remove('drop-in'), 200);
-        }
+        if (tc7) { tc7.innerHTML=`<span class="mark x-mark">X</span>`; tc7.classList.add('drop-in'); setTimeout(()=>tc7.classList.remove('drop-in'),200); }
       }, 100);
     }, 1100);
-  }
-
-  else if (type === 'warn') {
+  } else if (type === 'warn') {
     makeTutBoard(['X','O','','X','O','','X','','']);
-    scheduleAnim(() => {
-      document.getElementById('tc0')?.classList.add('highlight-x');
-      document.getElementById('tc3')?.classList.add('highlight-o');
-    }, 300);
-  }
-
-  else if (type === 'timer') {
+    scheduleAnim(() => { document.getElementById('tc0')?.classList.add('highlight-x'); document.getElementById('tc3')?.classList.add('highlight-o'); }, 300);
+  } else if (type === 'timer') {
     tb.innerHTML = `
-      <div style="grid-column:1/-1; display:flex; flex-direction:column; align-items:center; gap:10px; padding: 8px 0;">
-        <div style="font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--dim); letter-spacing:2px;">TIME LIMIT PER TURN</div>
-        <div id="tut-timer-demo" style="font-size:2.2rem; font-weight:700; font-family:'Orbitron',sans-serif; color:#00ffe1; text-shadow: 0 0 12px #00ffe1; transition:color 0.3s;">8.0s</div>
-        <div style="width:80%; height:6px; background:rgba(255,255,255,0.08); border-radius:99px; overflow:hidden;">
-          <div id="tut-bar" style="height:100%; border-radius:99px; background:#00ffe1; width:100%; transition:width 0.3s, background 0.3s;"></div>
+      <div style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);letter-spacing:2px;">TIME LIMIT PER TURN</div>
+        <div id="tut-timer-demo" style="font-size:2.2rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#00ffe1;text-shadow:0 0 12px #00ffe1;transition:color 0.3s;">8.0s</div>
+        <div style="width:80%;height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;">
+          <div id="tut-bar" style="height:100%;border-radius:99px;background:#00ffe1;width:100%;transition:width 0.3s,background 0.3s;"></div>
         </div>
-        <div style="font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--dim); text-align:center; margin-top:4px;">Gets shorter as the game progresses</div>
-      </div>
-    `;
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);text-align:center;margin-top:4px;">Gets shorter as the game progresses</div>
+      </div>`;
     let t = 8;
-    const lim = 8;
     function tick() {
       if (t < 0) t = 8;
-      const d = document.getElementById('tut-timer-demo');
-      const bar = document.getElementById('tut-bar');
+      const d = document.getElementById('tut-timer-demo'), bar = document.getElementById('tut-bar');
       if (!d) return;
-      d.textContent = t.toFixed(1) + 's';
-      const pct = t / lim;
-      if (bar) bar.style.width = (pct * 100) + '%';
-      let col = '#00ffe1';
-      if (pct <= 0.5) col = '#ffe600';
-      if (pct <= 0.3) col = '#ff7b00';
-      if (pct <= 0.15) col = '#ff2222';
-      d.style.color = col;
-      d.style.textShadow = `0 0 12px ${col}`;
-      if (bar) bar.style.background = col;
-      t -= 0.3;
-      tutAnimTimer = setTimeout(tick, 120);
+      d.textContent = t.toFixed(1)+'s'; const pct=t/8;
+      if(bar) bar.style.width=(pct*100)+'%';
+      let col='#00ffe1'; if(pct<=0.5)col='#ffe600'; if(pct<=0.3)col='#ff7b00'; if(pct<=0.15)col='#ff2222';
+      d.style.color=col; d.style.textShadow=`0 0 12px ${col}`; if(bar)bar.style.background=col;
+      t-=0.3; tutAnimTimer=setTimeout(tick,120);
     }
     tick();
   }
@@ -1086,29 +1190,18 @@ document.getElementById('tutBtn').onclick = openTutorial;
 document.getElementById('tutOverlay').addEventListener('click', e => {
   if (e.target === document.getElementById('tutOverlay')) closeTutorial();
 });
-
 document.getElementById('tutNext').onclick = () => {
-  if (tutStep < tutSteps.length - 1) {
-    tutStep++;
-    renderTutStep();
-  } else {
-    closeTutorial();
-  }
+  if (tutStep < tutSteps.length - 1) { tutStep++; renderTutStep(); } else closeTutorial();
 };
-
 document.getElementById('tutPrev').onclick = () => {
   if (tutStep > 0) { tutStep--; renderTutStep(); }
 };
 
 // ── Init ──────────────────────────────────────────────────────────────
 buildBoard();
-
-// Only show tutorial automatically if never seen before
 try {
   if (!localStorage.getItem(TUT_SEEN_KEY)) openTutorial();
-} catch(e) {
-  openTutorial(); // if localStorage unavailable, show it
-}
+} catch(e) { openTutorial(); }
 </script>
 </body>
 </html>
